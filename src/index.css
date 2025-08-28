@@ -1,0 +1,38 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
+@import "tailwindcss";
+@config "../tailwind.config.js";
+
+@utility scrollbar-hidden {
+  &::-webkit-scrollbar { display: none; }
+  -ms-overflow-style: none; scrollbar-width: none;
+}
+
+html { scroll-behavior: smooth; }
+body { font-family: 'Inter', sans-serif; background-color: #0B0B0F; }
+
+.hero-gradient {
+  background: linear-gradient(135deg, rgba(0,71,204,0.18) 0%, rgba(0,0,0,0.85) 100%);
+}
+
+.jersey-3d-container { perspective: 1000px; }
+.jersey-3d { transform-style: preserve-3d; animation: rotate 20s infinite linear; }
+@keyframes rotate { from { transform: rotateY(0deg);} to { transform: rotateY(360deg);} }
+
+.section-fade-in { opacity: 0; transform: translateY(20px); transition: opacity .6s ease-out, transform .6s ease-out; }
+.section-fade-in.visible { opacity: 1; transform: translateY(0); }
+
+.process-line { position: absolute; top: 40px; left: 50%; width: 100%; height: 2px; background: rgba(255,255,255,0.08); transform: translateX(-50%); z-index: -1; }
+
+.testimonial-card { transition: transform .3s ease, box-shadow .3s ease; }
+.testimonial-card:hover { transform: translateY(-5px); box-shadow: 0 10px 25px rgba(0, 71, 204, 0.15); }
+
+.portfolio-item { overflow: hidden; }
+.portfolio-item img { transition: transform .5s ease; }
+.portfolio-item:hover img { transform: scale(1.05); }
+
+
+.image-smooth{
+  backface-visibility: hidden;
+  transform: translateZ(0);
+  will-change: opacity, transform;
+}
