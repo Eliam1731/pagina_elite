@@ -1,3 +1,4 @@
+// src/App.tsx
 import React from "react";
 import { Navbar } from "./components/Navbar";
 import { HeroSection } from "./components/HeroSection";
@@ -12,11 +13,16 @@ import { Footer } from "./components/Footer";
 export default function App() {
   React.useEffect(() => {
     const observer = new IntersectionObserver(
-      (entries) => entries.forEach((e) => e.isIntersecting && e.target.classList.add("visible")),
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) entry.target.classList.add("visible");
+        });
+      },
       { root: null, rootMargin: "0px", threshold: 0.1 }
     );
-    document.querySelectorAll(".section-fade-in").forEach((s) => observer.observe(s));
-    return () => document.querySelectorAll(".section-fade-in").forEach((s) => observer.unobserve(s));
+
+    document.querySelectorAll(".section-fade-in").forEach((el) => observer.observe(el));
+    return () => document.querySelectorAll(".section-fade-in").forEach((el) => observer.unobserve(el));
   }, []);
 
   return (
@@ -29,7 +35,8 @@ export default function App() {
         <CustomizationSection />
         <FaqSection />
         <ContactSection />
-        {/* 👇 Opiniones hasta el final */}
+
+        {/* Opiniones/Calificación al final */}
         <TestimonialsSection />
       </main>
       <Footer />

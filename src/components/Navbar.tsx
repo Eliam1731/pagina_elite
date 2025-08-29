@@ -1,4 +1,3 @@
-// src/components/Navbar.tsx
 import React from "react";
 import {
   Navbar as HeroNavbar,
@@ -8,13 +7,18 @@ import {
   NavbarMenuToggle,
   NavbarMenu,
   NavbarMenuItem,
-  Link,
+  Link as HeroLink,
   Button,
 } from "@heroui/react";
 import { Icon } from "@iconify/react";
+import { Link as RouterLink } from "react-router-dom";
 
 import logoBlanco from "../img/logo_blanco.png";
-import logoNegro from "../img/logo_negro.png"; // por si en el futuro usas navbar clara
+// import logoNegro from "../img/logo_negro.png"; // por si algún día usas navbar clara
+
+type MenuItem =
+  | { name: string; href: string }          // ancla dentro de la landing (#seccion)
+  | { name: string; route: string };        // ruta SPA (página nueva)
 
 export const Navbar: React.FC = () => {
   const [isMenuOpen, setIsMenuOpen] = React.useState(false);
@@ -26,25 +30,25 @@ export const Navbar: React.FC = () => {
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
 
-  // ====== CONTACTO POR WHATSAPP (MX) ======
-  // Formato: 52 + 1 + número de 10 dígitos
-  const phone = "5219222107515";
+  // ====== WhatsApp directo (MX) ======
+  const phone = "5219222107515"; // 52 + 1 + 10 dígitos
   const message = "Hola EliteDesigns, quiero cotizar uniformes personalizados.";
   const waLink = `https://wa.me/${phone}?text=${encodeURIComponent(message)}`;
-  // ========================================
+  // ===================================
 
-  // SOLO Instagram y Facebook
+  // Solo IG y FB
   const socials = [
-    { name: "Instagram", href: "https://www.instagram.com/_designs_elite_?igsh=MXB0d3lobm8yeG8yMw==", icon: "lucide:instagram" },
-    { name: "Facebook", href: "https://www.facebook.com/share/1BLoEUhoQp/?mibextid=wwXIfr", icon: "lucide:facebook" },
+    { name: "Instagram", href: "https://instagram.com/TU_USUARIO", icon: "lucide:instagram" },
+    { name: "Facebook", href: "https://facebook.com/TU_USUARIO", icon: "lucide:facebook" },
   ];
 
-  const menuItems = [
+  // Reemplazamos “Testimonios” por “Diseños” → /designs
+  const menuItems: MenuItem[] = [
     { name: "Inicio", href: "#" },
     { name: "Portafolio", href: "#portfolio" },
     { name: "Proceso", href: "#process" },
     { name: "Personalización", href: "#customization" },
-    { name: "Testimonios", href: "#testimonials" },
+    { name: "Diseños", route: "/designs" }, // 👈 nuevo item
     { name: "FAQ", href: "#faq" },
   ];
 
@@ -52,8 +56,9 @@ export const Navbar: React.FC = () => {
     <HeroNavbar
       isMenuOpen={isMenuOpen}
       onMenuOpenChange={setIsMenuOpen}
-      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300
-        ${isScrolled ? "bg-background/95 backdrop-blur-md shadow-sm" : "bg-transparent"}`}
+      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
+        isScrolled ? "bg-background/95 backdrop-blur-md shadow-sm" : "bg-transparent"
+      }`}
       maxWidth="xl"
     >
       {/* Izquierda: menú + marca */}
@@ -65,7 +70,7 @@ export const Navbar: React.FC = () => {
         <NavbarBrand>
           <div className="flex items-center gap-2">
             <img
-              src={logoBlanco /* usa logoNegro si cambias a navbar clara */}
+              src={logoBlanco}
               alt="EliteDesigns"
               className="h-7 w-auto select-none"
               draggable={false}
@@ -81,13 +86,23 @@ export const Navbar: React.FC = () => {
       <NavbarContent className="hidden sm:flex gap-6" justify="center">
         {menuItems.map((item) => (
           <NavbarItem key={item.name}>
-            <Link
-              href={item.href}
-              color="foreground"
-              className="font-medium text-sm hover:text-primary transition-colors"
-            >
-              {item.name}
-            </Link>
+            {"route" in item ? (
+              <HeroLink
+                as={RouterLink}
+                to={item.route}
+                className="font-medium text-sm text-foreground hover:text-primary transition-colors"
+              >
+                {item.name}
+              </HeroLink>
+            ) : (
+              <HeroLink
+                href={item.href}
+                color="foreground"
+                className="font-medium text-sm hover:text-primary transition-colors"
+              >
+                {item.name}
+              </HeroLink>
+            )}
           </NavbarItem>
         ))}
       </NavbarContent>
@@ -95,10 +110,9 @@ export const Navbar: React.FC = () => {
       {/* Derecha: redes + WhatsApp (desktop) */}
       <NavbarContent justify="end">
         <NavbarItem className="hidden sm:flex items-center gap-3">
-          {/* Redes (solo IG y FB) */}
           <div className="hidden md:flex items-center gap-3">
             {socials.map((s) => (
-              <Link
+              <HeroLink
                 key={s.name}
                 href={s.href}
                 target="_blank"
@@ -107,13 +121,12 @@ export const Navbar: React.FC = () => {
                 className="text-white/80 hover:text-white transition-colors"
               >
                 <Icon icon={s.icon} className="w-5 h-5" />
-              </Link>
+              </HeroLink>
             ))}
           </div>
 
-          {/* CTA WhatsApp */}
           <Button
-            as={Link}
+            as={HeroLink}
             href={waLink}
             target="_blank"
             rel="noopener noreferrer"
@@ -131,20 +144,32 @@ export const Navbar: React.FC = () => {
       <NavbarMenu className="pt-6">
         {menuItems.map((item) => (
           <NavbarMenuItem key={item.name}>
-            <Link
-              href={item.href}
-              color="foreground"
-              className="w-full font-medium text-lg py-2"
-            >
-              {item.name}
-            </Link>
+            {"route" in item ? (
+              <HeroLink
+                as={RouterLink}
+                to={item.route}
+                className="w-full font-medium text-lg py-2 text-foreground hover:text-primary transition-colors"
+                onClick={() => setIsMenuOpen(false)}
+              >
+                {item.name}
+              </HeroLink>
+            ) : (
+              <HeroLink
+                href={item.href}
+                color="foreground"
+                className="w-full font-medium text-lg py-2"
+                onClick={() => setIsMenuOpen(false)}
+              >
+                {item.name}
+              </HeroLink>
+            )}
           </NavbarMenuItem>
         ))}
 
-        {/* Botón WhatsApp y redes en móvil */}
+        {/* CTA WhatsApp y redes en móvil */}
         <div className="mt-4 space-y-3">
           <Button
-            as={Link}
+            as={HeroLink}
             href={waLink}
             target="_blank"
             rel="noopener noreferrer"
@@ -158,7 +183,7 @@ export const Navbar: React.FC = () => {
 
           <div className="flex items-center gap-4 px-1">
             {socials.map((s) => (
-              <Link
+              <HeroLink
                 key={s.name}
                 href={s.href}
                 target="_blank"
@@ -167,7 +192,7 @@ export const Navbar: React.FC = () => {
               >
                 <Icon icon={s.icon} className="w-5 h-5" />
                 <span>{s.name}</span>
-              </Link>
+              </HeroLink>
             ))}
           </div>
         </div>

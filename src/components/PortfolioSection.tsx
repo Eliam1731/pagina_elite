@@ -1,86 +1,194 @@
 import React from "react";
-import { Card, CardBody, Button } from "@heroui/react";
+import { Button } from "@heroui/react";
 import { Icon } from "@iconify/react";
-import { motion } from "framer-motion";
+
+/* ============================
+   IMPORTA TUS IMÁGENES (solo 1 activa por ahora)
+   Cambia .png por .jpg si usas JPG
+   ============================ */
+// FÚTBOL
+import futbol_1 from "../img/portfolio/futbol_1.jpg";
+// import futbol_2 from "../img/portfolio/futbol_2.png";
+// import futbol_3 from "../img/portfolio/futbol_3.png";
+// import futbol_4 from "../img/portfolio/futbol_4.png";
+// import futbol_5 from "../img/portfolio/futbol_5.png";
+// import futbol_6 from "../img/portfolio/futbol_6.png";
+
+// VOLEIBOL
+import volei_1 from "../img/portfolio/volei_1.jpg";
+// import volei_2 from "../img/portfolio/volei_2.png";
+// import volei_3 from "../img/portfolio/volei_3.png";
+// import volei_4 from "../img/portfolio/volei_4.png";
+// import volei_5 from "../img/portfolio/volei_5.png";
+// import volei_6 from "../img/portfolio/volei_6.png";
+
+// BALONCESTO
+import bas_1 from "../img/portfolio/bas_1.jpg";
+// import bas_2 from "../img/portfolio/bas_2.png";
+// import bas_3 from "../img/portfolio/bas_3.png";
+// import bas_4 from "../img/portfolio/bas_4.png";
+// import bas_5 from "../img/portfolio/bas_5.png";
+// import bas_6 from "../img/portfolio/bas_6.png";
+
+// BÉISBOL
+import beis_1 from "../img/portfolio/beis_1.jpg";
+// import beis_2 from "../img/portfolio/beis_2.png";
+// import beis_3 from "../img/portfolio/beis_3.png";
+// import beis_4 from "../img/portfolio/beis_4.png";
+// import beis_5 from "../img/portfolio/beis_5.png";
+// import beis_6 from "../img/portfolio/beis_6.png";
+
+type Sport = "all" | "futbol" | "baloncesto" | "voleibol" | "beisbol";
+type SportOnly = Exclude<Sport, "all">;
+
+const filters: { key: Sport; label: string }[] = [
+  { key: "all", label: "Todos" },
+  { key: "futbol", label: "Fútbol" },
+  { key: "baloncesto", label: "Baloncesto" },
+  { key: "voleibol", label: "Voleibol" },
+  { key: "beisbol", label: "Béisbol" },
+];
+
+/* ============================
+   ITEMS DEL PORTAFOLIO
+   (4 activos ahora; el resto comentado y listo para usar)
+   ============================ */
+const items: { id: number; sport: SportOnly; src: string; alt: string }[] = [
+  // Activos
+  { id: 1, sport: "futbol", src: futbol_1, alt: "Uniforme de fútbol 1" },
+  { id: 2, sport: "voleibol", src: volei_1, alt: "Uniforme de voleibol 1" },
+  { id: 3, sport: "baloncesto", src: bas_1, alt: "Uniforme de baloncesto 1" },
+  { id: 4, sport: "beisbol", src: beis_1, alt: "Uniforme de béisbol 1" },
+
+  // Fútbol
+  // { id: 5,  sport: "futbol", src: futbol_2, alt: "Uniforme de fútbol 2" },
+  // { id: 6,  sport: "futbol", src: futbol_3, alt: "Uniforme de fútbol 3" },
+  // { id: 7,  sport: "futbol", src: futbol_4, alt: "Uniforme de fútbol 4" },
+  // { id: 8,  sport: "futbol", src: futbol_5, alt: "Uniforme de fútbol 5" },
+  // { id: 9,  sport: "futbol", src: futbol_6, alt: "Uniforme de fútbol 6" },
+
+  // Voleibol
+  // { id: 10, sport: "voleibol", src: volei_2, alt: "Uniforme de voleibol 2" },
+  // { id: 11, sport: "voleibol", src: volei_3, alt: "Uniforme de voleibol 3" },
+  // { id: 12, sport: "voleibol", src: volei_4, alt: "Uniforme de voleibol 4" },
+  // { id: 13, sport: "voleibol", src: volei_5, alt: "Uniforme de voleibol 5" },
+  // { id: 14, sport: "voleibol", src: volei_6, alt: "Uniforme de voleibol 6" },
+
+  // Baloncesto
+  // { id: 15, sport: "baloncesto", src: bas_2, alt: "Uniforme de baloncesto 2" },
+  // { id: 16, sport: "baloncesto", src: bas_3, alt: "Uniforme de baloncesto 3" },
+  // { id: 17, sport: "baloncesto", src: bas_4, alt: "Uniforme de baloncesto 4" },
+  // { id: 18, sport: "baloncesto", src: bas_5, alt: "Uniforme de baloncesto 5" },
+  // { id: 19, sport: "baloncesto", src: bas_6, alt: "Uniforme de baloncesto 6" },
+
+  // Béisbol
+  // { id: 20, sport: "beisbol", src: beis_2, alt: "Uniforme de béisbol 2" },
+  // { id: 21, sport: "beisbol", src: beis_3, alt: "Uniforme de béisbol 3" },
+  // { id: 22, sport: "beisbol", src: beis_4, alt: "Uniforme de béisbol 4" },
+  // { id: 23, sport: "beisbol", src: beis_5, alt: "Uniforme de béisbol 5" },
+  // { id: 24, sport: "beisbol", src: beis_6, alt: "Uniforme de béisbol 6" },
+];
 
 export const PortfolioSection: React.FC = () => {
-  const portfolioItems = [
-    { id: 1, category: "Fútbol", title: "FC Águilas - Uniforme Local" },
-    { id: 2, category: "Baloncesto", title: "Halcones BC - Uniforme Visitante" },
-    { id: 3, category: "Voleibol", title: "Tigres VC - Uniforme Completo" },
-    { id: 4, category: "Rugby", title: "Toros Rugby - Edición Especial" },
-    { id: 5, category: "Béisbol", title: "Leones BC - Uniforme Alternativo" },
-    { id: 6, category: "Fútbol", title: "Deportivo Halcones - Edición Limitada" },
-    { id: 7, category: "Baloncesto", title: "Panteras BC - Uniforme Conmemorativo" },
-    { id: 8, category: "Voleibol", title: "Lobos VC - Uniforme de Temporada" },
-  ];
+  const [active, setActive] = React.useState<Sport>("all");
+  const [isMobile, setIsMobile] = React.useState(false);
+  const [showAllMobile, setShowAllMobile] = React.useState(false);
 
-  const [filter, setFilter] = React.useState("Todos");
-  const categories = ["Todos", "Fútbol", "Baloncesto", "Voleibol", "Rugby", "Béisbol"];
-  const filteredItems = filter === "Todos" ? portfolioItems : portfolioItems.filter(i => i.category === filter);
+  // Detecta móvil (<768px)
+  React.useEffect(() => {
+    const check = () => setIsMobile(window.innerWidth < 768);
+    check();
+    window.addEventListener("resize", check);
+    return () => window.removeEventListener("resize", check);
+  }, []);
+
+  // Al cambiar filtro, colapsa en móvil
+  React.useEffect(() => {
+    setShowAllMobile(false);
+  }, [active]);
+
+  const filtered = React.useMemo(() => {
+    if (active === "all") return items;
+    return items.filter((i) => i.sport === active);
+  }, [active]);
+
+  const visible = React.useMemo(() => {
+    if (!isMobile) return filtered;             // Desktop: todos
+    if (showAllMobile) return filtered;         // Móvil expandido
+    return filtered.slice(0, 3);                // Móvil: los 3 primeros
+  }, [filtered, isMobile, showAllMobile]);
 
   return (
-    <section id="portfolio" className="py-20 md:py-28 bg-background">
-      <div className="container mx-auto px-4">
-        <div className="section-fade-in">
-          <div className="text-center mb-12">
-            <h2 className="text-3xl md:text-4xl font-bold text-white">
-              Nuestro <span className="text-primary">Portafolio</span>
-            </h2>
-            <p className="text-foreground-500 max-w-2xl mx-auto">
-              Explora nuestra colección de uniformes deportivos personalizados.
-            </p>
-          </div>
+    <section id="portfolio" className="relative py-20 md:py-28 bg-background">
+      {/* Degradé superior sutil */}
+      <div className="pointer-events-none absolute top-0 left-0 right-0 h-24 bg-gradient-to-t from-[#0B0B0F] to-transparent" />
 
-          <div className="flex flex-wrap justify-center gap-2 mb-10">
-            {categories.map((category) => {
-              const selected = filter === category;
-              return (
-                <Button
-                  key={category}
-                  size="sm"
-                  className={
-                    selected
-                      ? "bg-primary text-white border-transparent"
-                      : "bg-white/5 text-white/80 border border-white/10 hover:bg-white/10"
-                  }
-                  variant={selected ? "solid" : "flat"}
-                  onPress={() => setFilter(category)}
-                >
-                  {category}
-                </Button>
-              );
-            })}
-          </div>
+      <div className="container mx-auto px-4 section-fade-in">
+        <div className="text-center mb-10 md:mb-14">
+          <h2 className="text-3xl md:text-4xl font-bold text-white">
+            Nuestro <span className="text-primary">Portafolio</span>
+          </h2>
+          <p className="text-foreground-500 max-w-2xl mx-auto mt-3">
+            Explora nuestros uniformes personalizados por disciplina.
+          </p>
+        </div>
 
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-            {filteredItems.map((item, index) => (
-              <motion.div key={item.id} initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: .35, delay: .08 * index }}>
-                <Card shadow="sm" className="portfolio-item bg-[#0F1322] border border-white/5 overflow-hidden">
-                  <CardBody className="p-0 overflow-hidden">
-                    <div className="relative group">
-                      <img src={`https://img.heroui.chat/image/sports?w=400&h=500&u=jersey${item.id}`} alt={item.title} className="w-full h-64 object-cover" />
-                      <div className="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex flex-col justify-end p-4">
-                        <span className="text-xs text-primary-200 font-medium">{item.category}</span>
-                        <h3 className="text-white font-semibold">{item.title}</h3>
-                        <Button size="sm" className="mt-2 self-start bg-white/10 text-white border border-white/20 hover:bg-white/15" startContent={<Icon icon="lucide:eye" className="text-sm" />}>
-                          Ver detalles
-                        </Button>
-                      </div>
-                    </div>
-                  </CardBody>
-                </Card>
-              </motion.div>
-            ))}
-          </div>
+        {/* Filtros */}
+        <div className="flex flex-wrap items-center justify-center gap-3 mb-8">
+          {filters.map((f) => {
+            const activeStyles =
+              f.key === active
+                ? "bg-primary text-white border-primary"
+                : "bg-content2 text-foreground-600 hover:bg-content3 border-white/10";
+            return (
+              <button
+                key={f.key}
+                onClick={() => setActive(f.key)}
+                className={`px-4 py-2 rounded-xl text-sm border transition ${activeStyles}`}
+              >
+                {f.label}
+              </button>
+            );
+          })}
+        </div>
 
-          <div className="mt-12 text-center">
-            <Button size="lg" className="bg-white/5 text-white border border-white/10 hover:bg-white/10" endContent={<Icon icon="lucide:arrow-right" />}>
-              Ver más diseños
+        {/* Grid */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+          {visible.map((it) => (
+            <div
+              key={it.id}
+              className="portfolio-item rounded-xl overflow-hidden bg-content1 border border-white/10 hover:border-white/20 transition"
+            >
+              <img
+                src={it.src}
+                alt={it.alt}
+                className="w-full h-56 md:h-64 object-cover"
+                draggable={false}
+                decoding="async"
+                loading="lazy"
+              />
+            </div>
+          ))}
+        </div>
+
+        {/* Ver más solo en móvil (si hay >3) */}
+        {isMobile && !showAllMobile && filtered.length > 3 && (
+          <div className="mt-8 flex justify-center md:hidden">
+            <Button
+              color="primary"
+              size="md"
+              onPress={() => setShowAllMobile(true)}
+              startContent={<Icon icon="lucide:plus" />}
+              className="font-medium"
+            >
+              Ver más
             </Button>
           </div>
-        </div>
+        )}
       </div>
+
+      {/* Degradé inferior sutil */}
+      <div className="pointer-events-none absolute bottom-0 left-0 right-0 h-24 bg-gradient-to-b from-transparent to-[#0B0B0F]" />
     </section>
   );
 };
