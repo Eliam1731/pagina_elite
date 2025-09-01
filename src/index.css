@@ -2,6 +2,9 @@
 @import "tailwindcss";
 @config "../tailwind.config.js";
 
+/* MOD: valor por defecto de la altura del navbar (fallback) */
+:root { --nav-h: 72px; }
+
 @utility scrollbar-hidden {
   &::-webkit-scrollbar { display: none; }
   -ms-overflow-style: none; scrollbar-width: none;
@@ -29,7 +32,6 @@ body { font-family: 'Inter', sans-serif; background-color: #0B0B0F; }
 .portfolio-item { overflow: hidden; }
 .portfolio-item img { transition: transform .5s ease; }
 .portfolio-item:hover img { transform: scale(1.05); }
-
 
 .image-smooth{
   backface-visibility: hidden;

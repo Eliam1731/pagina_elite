@@ -17,8 +17,8 @@ import logoBlanco from "../img/logo_blanco.png";
 // import logoNegro from "../img/logo_negro.png"; // por si algún día usas navbar clara
 
 type MenuItem =
-  | { name: string; href: string }          // ancla dentro de la landing (#seccion)
-  | { name: string; route: string };        // ruta SPA (página nueva)
+  | { name: string; href: string } // ancla dentro de la landing (#seccion)
+  | { name: string; route: string }; // ruta SPA (página nueva)
 
 export const Navbar: React.FC = () => {
   const [isMenuOpen, setIsMenuOpen] = React.useState(false);
@@ -30,6 +30,19 @@ export const Navbar: React.FC = () => {
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
 
+  // MOD: Efecto para exponer la altura real del navbar en la variable CSS --nav-h
+  React.useEffect(() => {
+    const el = document.getElementById("site-navbar");
+    const setVar = () => {
+      const h = el?.getBoundingClientRect().height ?? 72;
+      document.documentElement.style.setProperty("--nav-h", `${h}px`);
+    };
+    setVar();
+    window.addEventListener("resize", setVar);
+    return () => window.removeEventListener("resize", setVar);
+  }, []);
+  // FIN MOD
+
   // ====== WhatsApp directo (MX) ======
   const phone = "5219222107515"; // 52 + 1 + 10 dígitos
   const message = "Hola EliteDesigns, quiero cotizar uniformes personalizados.";
@@ -38,22 +51,23 @@ export const Navbar: React.FC = () => {
 
   // Solo IG y FB
   const socials = [
-    { name: "Instagram", href: "https://instagram.com/TU_USUARIO", icon: "lucide:instagram" },
-    { name: "Facebook", href: "https://facebook.com/TU_USUARIO", icon: "lucide:facebook" },
+    { name: "Instagram", href: "https://www.instagram.com/_DESIGNS_ELITE_/#", icon: "lucide:instagram" },
+    { name: "Facebook", href: "https://www.facebook.com/people/Elite-Designs/61561488215914/?mibextid=LQQJ4d", icon: "lucide:facebook" },
   ];
 
   // Reemplazamos “Testimonios” por “Diseños” → /designs
   const menuItems: MenuItem[] = [
-    { name: "Inicio", href: "#" },
-    { name: "Portafolio", href: "#portfolio" },
-    { name: "Proceso", href: "#process" },
-    { name: "Personalización", href: "#customization" },
-    { name: "Diseños", route: "/designs" }, // 👈 nuevo item
-    { name: "FAQ", href: "#faq" },
+  { name: "Inicio", href: "/#" },
+  { name: "Portafolio", href: "/#portfolio" },
+  { name: "Proceso", href: "/#process" },
+  { name: "Personalización", href: "/#custom" }, // 👈 absoluto
+  { name: "Diseños", route: "/designs" },               // 👈 ruta SPA
+  { name: "FAQ", href: "/#faq" },
   ];
 
   return (
     <HeroNavbar
+      id="site-navbar" // MOD: id para medir la altura del navbar
       isMenuOpen={isMenuOpen}
       onMenuOpenChange={setIsMenuOpen}
       className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${

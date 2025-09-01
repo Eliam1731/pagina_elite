@@ -7,8 +7,8 @@ export const FaqSection: React.FC = () => {
   const faqItems = [
     { key: "1", title: "¿Tiempo de entrega?", content: "2–3 semanas estándar; opción express según cantidad." },
     { key: "2", title: "¿Materiales?", content: "Poliéster microperforado, dry-fit y mezclas de alto rendimiento." },
-    { key: "3", title: "¿Cantidad mínima?", content: "Mínimo 10 uniformes, con precios escalonados." },
-    { key: "4", title: "¿Diseño personalizado?", content: "3 propuestas iniciales + 3 rondas de ajustes." },
+    { key: "3", title: "¿Cantidad mínima?", content: "Mínimo 6 uniformes" },
+    { key: "4", title: "¿Diseño personalizado?", content: "2 propuestas iniciales + 2 rondas de ajustes." },
   ];
 
   return (

@@ -5,9 +5,9 @@ import { motion } from "framer-motion";
 
 // Tus cuatro imágenes locales (ajusta rutas si cambian)
 import whiteFront from "../img/jerseys/jerseyWhiteFront.png";
-import whiteBack  from "../img/jerseys/jerseyWhiteBack.png";
+import whiteBack from "../img/jerseys/jerseyWhiteBack.png";
 import blackFront from "../img/jerseys/jerseyBlackFront.png";
-import blackBack  from "../img/jerseys/jerseyBlackBack.png";
+import blackBack from "../img/jerseys/jerseyBlackBack.png";
 
 export const HeroSection: React.FC = () => {
   // frames en orden manual
@@ -15,14 +15,8 @@ export const HeroSection: React.FC = () => {
 
   const [idx, setIdx] = React.useState(0);
 
-  const next = React.useCallback(
-    () => setIdx((i) => (i + 1) % frames.length),
-    [frames.length]
-  );
-  const prev = React.useCallback(
-    () => setIdx((i) => (i - 1 + frames.length) % frames.length),
-    [frames.length]
-  );
+  const next = React.useCallback(() => setIdx((i) => (i + 1) % frames.length), [frames.length]);
+  const prev = React.useCallback(() => setIdx((i) => (i - 1 + frames.length) % frames.length), [frames.length]);
 
   // Evitar seleccionar/arrastrar imagen
   const preventDrag = (e: React.DragEvent) => e.preventDefault();
@@ -37,8 +31,8 @@ export const HeroSection: React.FC = () => {
       id="home"
       className="
         relative overflow-hidden hero-gradient
-        pt-24 md:pt-28 lg:pt-32
         pb-12 md:pb-16
+        pt-[calc(var(--nav-h)+8px)]  /* MOD: usa altura real del navbar + 8px */
       "
     >
       {/* fondo radial suave detrás del jersey */}
@@ -63,8 +57,7 @@ export const HeroSection: React.FC = () => {
               className="max-w-2xl mx-auto lg:mx-0"
             >
               <h1 className="text-4xl md:text-5xl xl:text-6xl font-extrabold leading-tight mb-5 text-white">
-                Uniformes <span className="text-primary">sublimados</span> con
-                estilo
+                Uniformes <span className="text-primary">sublimados</span> con estilo
               </h1>
               <p className="text-foreground-500 text-lg md:text-xl mb-8">
                 Calidad premium, acabados limpios y personalización total.
