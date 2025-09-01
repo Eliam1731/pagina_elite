@@ -1,3 +1,4 @@
+// src/components/Navbar.tsx
 import React from "react";
 import {
   Navbar as HeroNavbar,
@@ -11,13 +12,12 @@ import {
   Button,
 } from "@heroui/react";
 import { Icon } from "@iconify/react";
-import { Link as RouterLink } from "react-router-dom";
+import { NavLink, Link as RouterLink } from "react-router-dom";
 
 import logoBlanco from "../img/logo_blanco.png";
-// import logoNegro from "../img/logo_negro.png"; // por si algún día usas navbar clara
 
 type MenuItem =
-  | { name: string; href: string } // ancla dentro de la landing (#seccion)
+  | { name: string; href: string }   // ancla dentro de la landing (#seccion)
   | { name: string; route: string }; // ruta SPA (página nueva)
 
 export const Navbar: React.FC = () => {
@@ -30,7 +30,7 @@ export const Navbar: React.FC = () => {
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
 
-  // MOD: Efecto para exponer la altura real del navbar en la variable CSS --nav-h
+  // Exponer la altura real del navbar en --nav-h
   React.useEffect(() => {
     const el = document.getElementById("site-navbar");
     const setVar = () => {
@@ -41,13 +41,11 @@ export const Navbar: React.FC = () => {
     window.addEventListener("resize", setVar);
     return () => window.removeEventListener("resize", setVar);
   }, []);
-  // FIN MOD
 
-  // ====== WhatsApp directo (MX) ======
+  // WhatsApp CTA
   const phone = "5219222107515"; // 52 + 1 + 10 dígitos
   const message = "Hola EliteDesigns, quiero cotizar uniformes personalizados.";
   const waLink = `https://wa.me/${phone}?text=${encodeURIComponent(message)}`;
-  // ===================================
 
   // Solo IG y FB
   const socials = [
@@ -55,19 +53,19 @@ export const Navbar: React.FC = () => {
     { name: "Facebook", href: "https://www.facebook.com/people/Elite-Designs/61561488215914/?mibextid=LQQJ4d", icon: "lucide:facebook" },
   ];
 
-  // Reemplazamos “Testimonios” por “Diseños” → /designs
+  // OJO: el anchor debe coincidir con el id del <section>
   const menuItems: MenuItem[] = [
-  { name: "Inicio", href: "/#" },
-  { name: "Portafolio", href: "/#portfolio" },
-  { name: "Proceso", href: "/#process" },
-  { name: "Personalización", href: "/#custom" }, // 👈 absoluto
-  { name: "Diseños", route: "/designs" },               // 👈 ruta SPA
-  { name: "FAQ", href: "/#faq" },
+    { name: "Inicio", href: "/#" },
+    { name: "Portafolio", href: "/#portfolio" },
+    { name: "Proceso", href: "/#process" },
+    { name: "Personalización", href: "/#custom" }, // <-- usa este o cambia el id del section a "custom"
+    { name: "Diseños", route: "/designs" },               // ruta SPA
+    { name: "FAQ", href: "/#faq" },
   ];
 
   return (
     <HeroNavbar
-      id="site-navbar" // MOD: id para medir la altura del navbar
+      id="site-navbar"
       isMenuOpen={isMenuOpen}
       onMenuOpenChange={setIsMenuOpen}
       className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
@@ -75,14 +73,14 @@ export const Navbar: React.FC = () => {
       }`}
       maxWidth="xl"
     >
-      {/* Izquierda: menú + marca */}
+      {/* Izquierda: menú + marca (marca lleva a Inicio) */}
       <NavbarContent>
         <NavbarMenuToggle
           aria-label={isMenuOpen ? "Cerrar menú" : "Abrir menú"}
           className="sm:hidden"
         />
         <NavbarBrand>
-          <div className="flex items-center gap-2">
+          <RouterLink to="/" className="flex items-center gap-2">
             <img
               src={logoBlanco}
               alt="EliteDesigns"
@@ -92,7 +90,7 @@ export const Navbar: React.FC = () => {
             <p className="font-bold text-white text-lg">
               Elite<span className="text-primary">Designs</span>
             </p>
-          </div>
+          </RouterLink>
         </NavbarBrand>
       </NavbarContent>
 
@@ -101,14 +99,19 @@ export const Navbar: React.FC = () => {
         {menuItems.map((item) => (
           <NavbarItem key={item.name}>
             {"route" in item ? (
-              <HeroLink
-                as={RouterLink}
+              // Rutas SPA: NavLink (más confiable)
+              <NavLink
                 to={item.route}
-                className="font-medium text-sm text-foreground hover:text-primary transition-colors"
+                className={({ isActive }) =>
+                  `font-medium text-sm transition-colors ${
+                    isActive ? "text-primary" : "text-foreground hover:text-primary"
+                  }`
+                }
               >
                 {item.name}
-              </HeroLink>
+              </NavLink>
             ) : (
+              // Anclas absolutas: HeroLink
               <HeroLink
                 href={item.href}
                 color="foreground"
@@ -159,14 +162,17 @@ export const Navbar: React.FC = () => {
         {menuItems.map((item) => (
           <NavbarMenuItem key={item.name}>
             {"route" in item ? (
-              <HeroLink
-                as={RouterLink}
+              <NavLink
                 to={item.route}
-                className="w-full font-medium text-lg py-2 text-foreground hover:text-primary transition-colors"
+                className={({ isActive }) =>
+                  `w-full font-medium text-lg py-2 transition-colors ${
+                    isActive ? "text-primary" : "text-foreground hover:text-primary"
+                  }`
+                }
                 onClick={() => setIsMenuOpen(false)}
               >
                 {item.name}
-              </HeroLink>
+              </NavLink>
             ) : (
               <HeroLink
                 href={item.href}
